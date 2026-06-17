@@ -67,7 +67,11 @@ const COMMON_ITEMS = [
   { english_name: 'Ghee', telugu_name: 'నెయ్యి', unit: 'Packets', category: 'Dairy', price: 350, threshold: 1 },
   { english_name: 'Cheese', telugu_name: 'చీజ్', unit: 'Packets', category: 'Dairy', price: 120, threshold: 1 },
   { english_name: 'Mustard', telugu_name: 'ఆవాలు', unit: 'Packets', category: 'Spices', price: 15, threshold: 1 },
-  { english_name: 'Cumin', telugu_name: 'జీలకర్ర', unit: 'Packets', category: 'Spices', price: 40, threshold: 1 }
+  { english_name: 'Cumin', telugu_name: 'జీలకర్ర', unit: 'Packets', category: 'Spices', price: 40, threshold: 1 },
+  { english_name: 'Maggi', telugu_name: 'మ్యాగీ', unit: 'Packets', category: 'Snacks', price: 14, threshold: 2 },
+  { english_name: 'Horlicks', telugu_name: 'హార్లిక్స్', unit: 'Kg', category: 'Snacks', price: 320, threshold: 0.5 },
+  { english_name: 'Colgate Paste', telugu_name: 'కోల్గేట్ పేస్ట్', unit: 'Pieces', category: 'Personal Care', price: 90, threshold: 1 },
+  { english_name: 'Salt', telugu_name: 'ఉప్పు', unit: 'Kg', category: 'Spices', price: 25, threshold: 0.5 }
 ];
 
 const isFancyItem = (category: string) => {

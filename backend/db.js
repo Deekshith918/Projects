@@ -128,7 +128,11 @@ async function initDb() {
         ['Curd', 'పెరుగు', 0.0, 'Packets', 1.0, 'Dairy', 30.0],
         ['Butter', 'వెన్న', 0.0, 'Packets', 1.0, 'Dairy', 50.0],
         ['Ghee', 'నెయ్యి', 0.0, 'Packets', 1.0, 'Dairy', 350.0],
-        ['Cheese', 'చీజ్', 0.0, 'Packets', 1.0, 'Dairy', 120.0]
+        ['Cheese', 'చీజ్', 0.0, 'Packets', 1.0, 'Dairy', 120.0],
+        ['Maggi', 'మ్యాగీ', 6.0, 'Packets', 2.0, 'Snacks', 14.0],
+        ['Horlicks', 'హార్లిక్స్', 2.0, 'Kg', 0.5, 'Snacks', 320.0],
+        ['Colgate Paste', 'కోల్గేట్ పేస్ట్', 1.0, 'Pieces', 1.0, 'Personal Care', 90.0],
+        ['Salt', 'ఉప్పు', 1.0, 'Kg', 0.5, 'Spices', 25.0]
       ];
 
       for (const item of seedItems) {
@@ -232,6 +236,25 @@ async function initDb() {
       const dbItem = await get("SELECT * FROM items WHERE LOWER(english_name) = ?", [item[0].toLowerCase()]);
       if (!dbItem) {
         console.log(`[Database Migration] Seeding missing Dairy item: ${item[0]}`);
+        await run(
+          "INSERT INTO items (english_name, telugu_name, quantity, unit, threshold, category, price) VALUES (?, ?, ?, ?, ?, ?, ?)",
+          item
+        );
+      }
+    }
+
+    // Ensure all standard General, Fancy, and Snack items are seeded (Self-healing checks)
+    const additionalItemsList = [
+      ['Maggi', 'మ్యాగీ', 6.0, 'Packets', 2.0, 'Snacks', 14.0],
+      ['Horlicks', 'హార్లిక్స్', 2.0, 'Kg', 0.5, 'Snacks', 320.0],
+      ['Colgate Paste', 'కోల్గేట్ పేస్ట్', 1.0, 'Pieces', 1.0, 'Personal Care', 90.0],
+      ['Salt', 'ఉప్పు', 1.0, 'Kg', 0.5, 'Spices', 25.0]
+    ];
+
+    for (const item of additionalItemsList) {
+      const dbItem = await get("SELECT * FROM items WHERE LOWER(english_name) = ?", [item[0].toLowerCase()]);
+      if (!dbItem) {
+        console.log(`[Database Migration] Seeding missing item: ${item[0]}`);
         await run(
           "INSERT INTO items (english_name, telugu_name, quantity, unit, threshold, category, price) VALUES (?, ?, ?, ?, ?, ?, ?)",
           item
