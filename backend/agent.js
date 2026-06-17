@@ -574,6 +574,16 @@ async function executeAction(data) {
   const { intent, item_english, item_telugu, quantity, unit } = data;
   const englishName = item_english || 'Custom Item';
   const teluguName = item_telugu || englishName;
+
+  if (englishName.toLowerCase().includes('mobile') || teluguName.toLowerCase().includes('mobile') || teluguName.includes('మొబైల్')) {
+    console.log('[Inventory Agent] Blocking invalid item action for mobile.');
+    return {
+      success: false,
+      message_english: "Mobile is not a valid grocery or kitchen item.",
+      message_telugu: "మొబైల్ అనేది వంటగది లేదా సరుకుల జాబితాలోకి రాదు."
+    };
+  }
+
   console.log('[Inventory Agent] Executing action:', { intent, item_english: englishName, item_telugu: teluguName, quantity, unit });
 
   try {

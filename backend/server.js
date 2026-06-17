@@ -20,6 +20,10 @@ async function normalizeNames(english_name, telugu_name) {
   let finalEnglish = (english_name || '').trim();
   let finalTelugu = (telugu_name || '').trim();
 
+  if (finalEnglish.toLowerCase().includes('mobile') || finalTelugu.toLowerCase().includes('mobile') || finalTelugu.includes('మొబైల్')) {
+    throw new Error("Mobile is not a valid grocery or kitchen item.");
+  }
+
   const teluguUnicodeRegex = /[\u0c00-\u0c7f]/;
   const originalEnglishMissing = !finalEnglish;
 
