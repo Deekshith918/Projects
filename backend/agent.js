@@ -355,6 +355,16 @@ async function callLLMWithImage(prompt, base64Image, mimeType) {
 
 // Coordinator Agent
 export async function runCoordinatorAgent(text) {
+  const cleanText = (text || '').trim();
+  if (!cleanText || !/[a-zA-Z\u0c00-\u0c7f\d]/.test(cleanText)) {
+    console.log('[Coordinator Agent] Empty or invalid command received. Skipping execution.');
+    return {
+      success: false,
+      message_english: "No spoken or typed command detected. Please speak or type clearly.",
+      message_telugu: "ఎటువంటి వాయిస్ కమాండ్ గుర్తించబడలేదు. దయచేసి స్పష్టంగా చెప్పండి."
+    };
+  }
+
   const prompt = `
     You are the Coordinator Agent for a Smart Telugu Household Inventory System.
     Your task is to parse the user's voice command (which may be in English, Telugu, or mixed Telugu-English) and determine the structured intention.
@@ -378,6 +388,20 @@ export async function runCoordinatorAgent(text) {
     - Butter / వెన్న (unit: Packets)
     - Ghee / నెయ్యి (unit: Packets)
     - Cheese / చీజ్ (unit: Packets)
+    - Jaggery / బెల్లం (unit: Kg)
+    - Maggi / మ్యాగీ (unit: Packets)
+    - Horlicks / హార్లిక్స్ (unit: Kg)
+    - Colgate Paste / కోల్గేట్ పేస్ట్ (unit: Pieces)
+    - Salt / ఉప్పు (unit: Kg)
+    - Potato / బంగాళదుంప (unit: Kg)
+    - Tomato / టమాటా (unit: Kg)
+    - Green Chillies / పచ్చిమిర్చి (unit: Kg)
+    - Coriander / కొత్తిమీర (unit: Packets)
+    - Shampoo / షాంపూ (unit: Pieces)
+    - Bath Soap / స్నానపు సబ్బు (unit: Pieces)
+    - Coconut Oil / కొబ్బరి నూనె (unit: Pieces)
+    - Detergent Powder / డిటర్జెంట్ పౌడర్ (unit: Kg)
+    - Chips / చిప్స్ (unit: Packets)
 
     Intents list:
     1. UPDATE_STOCK: Used when user updates their current stock, e.g. "Add 5 kg rice", "Oil is finished" (quantity should be 0), "Rice 2 kg matches".
@@ -392,7 +416,7 @@ export async function runCoordinatorAgent(text) {
     - response_message_english: Clear summary in English of the action taken.
     - response_message_telugu: Clear summary in Telugu of the action taken.
 
-    User Voice Command: "${text}"
+    User Voice Command: "${cleanText}"
 
     Respond ONLY with a JSON object of this structure:
     {
@@ -413,7 +437,7 @@ export async function runCoordinatorAgent(text) {
     return await executeAction(parsedData);
   } catch (error) {
     console.error('[Coordinator Agent] LLM rotation failed, using rule parser fallback:', error.message);
-    const parsedData = localRuleParser(text);
+    const parsedData = localRuleParser(cleanText);
     return await executeAction(parsedData);
   }
 }
