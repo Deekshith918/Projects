@@ -132,7 +132,16 @@ async function initDb() {
         ['Maggi', 'మ్యాగీ', 6.0, 'Packets', 2.0, 'Snacks', 14.0],
         ['Horlicks', 'హార్లిక్స్', 2.0, 'Kg', 0.5, 'Snacks', 320.0],
         ['Colgate Paste', 'కోల్గేట్ పేస్ట్', 1.0, 'Pieces', 1.0, 'Personal Care', 90.0],
-        ['Salt', 'ఉప్పు', 1.0, 'Kg', 0.5, 'Spices', 25.0]
+        ['Salt', 'ఉప్పు', 1.0, 'Kg', 0.5, 'Spices', 25.0],
+        ['Potato', 'బంగాళదుంప', 2.0, 'Kg', 2.0, 'Vegetables', 30.0],
+        ['Tomato', 'టమాటా', 2.0, 'Kg', 2.0, 'Vegetables', 40.0],
+        ['Green Chillies', 'పచ్చిమిర్చి', 0.5, 'Kg', 0.5, 'Vegetables', 60.0],
+        ['Coriander', 'కొత్తిమీర', 0.0, 'Packets', 1.0, 'Vegetables', 10.0],
+        ['Shampoo', 'షాంపూ', 1.0, 'Pieces', 1.0, 'Personal Care', 150.0],
+        ['Bath Soap', 'స్నానపు సబ్బు', 2.0, 'Pieces', 2.0, 'Personal Care', 45.0],
+        ['Coconut Oil', 'కొబ్బరి నూనె', 1.0, 'Pieces', 1.0, 'Personal Care', 120.0],
+        ['Detergent Powder', 'డిటర్జెంట్ పౌడర్', 1.0, 'Kg', 1.0, 'Personal Care', 140.0],
+        ['Chips', 'చిప్స్', 0.0, 'Packets', 2.0, 'Snacks', 20.0]
       ];
 
       for (const item of seedItems) {
@@ -158,41 +167,6 @@ async function initDb() {
         await run("INSERT INTO purchase_history (item_id, quantity, price_per_unit, total_price, purchase_date) VALUES (1, 20, 60, 1200, ?)", [date]);
         await run("INSERT INTO purchase_history (item_id, quantity, price_per_unit, total_price, purchase_date) VALUES (4, 3, 170, 510, ?)", [date]);
         await run("INSERT INTO purchase_history (item_id, quantity, price_per_unit, total_price, purchase_date) VALUES (3, 2, 150, 300, ?)", [date]);
-      }
-    }
-
-    // Deduplicate existing duplicate items in the database
-    const allItems = await all("SELECT * FROM items");
-    const seen = new Map();
-    for (const item of allItems) {
-      const key = (item.english_name || '').toLowerCase().trim();
-      if (!seen.has(key)) {
-        seen.set(key, item);
-      } else {
-        const originalItem = seen.get(key);
-        console.log(`[Database Migration] Found duplicate item: ${item.english_name} (ID: ${item.id}). Merging with original ID: ${originalItem.id}`);
-        
-        // Sum the quantities
-        const newQty = originalItem.quantity + item.quantity;
-        await run("UPDATE items SET quantity = ? WHERE id = ?", [newQty, originalItem.id]);
-        originalItem.quantity = newQty;
-
-        // Resolve shopping_list conflicts (item_id is UNIQUE)
-        const originalList = await get("SELECT * FROM shopping_list WHERE item_id = ?", [originalItem.id]);
-        const duplicateList = await get("SELECT * FROM shopping_list WHERE item_id = ?", [item.id]);
-        if (originalList && duplicateList) {
-          const newNeededQty = originalList.quantity + duplicateList.quantity;
-          await run("UPDATE shopping_list SET quantity = ? WHERE id = ?", [newNeededQty, originalList.id]);
-          await run("DELETE FROM shopping_list WHERE id = ?", [duplicateList.id]);
-        } else if (duplicateList) {
-          await run("UPDATE shopping_list SET item_id = ? WHERE id = ?", [originalItem.id, duplicateList.id]);
-        }
-
-        // Update purchase_history references
-        await run("UPDATE purchase_history SET item_id = ? WHERE item_id = ?", [originalItem.id, item.id]);
-
-        // Delete the duplicate item record
-        await run("DELETE FROM items WHERE id = ?", [item.id]);
       }
     }
 
@@ -248,7 +222,16 @@ async function initDb() {
       ['Maggi', 'మ్యాగీ', 6.0, 'Packets', 2.0, 'Snacks', 14.0],
       ['Horlicks', 'హార్లిక్స్', 2.0, 'Kg', 0.5, 'Snacks', 320.0],
       ['Colgate Paste', 'కోల్గేట్ పేస్ట్', 1.0, 'Pieces', 1.0, 'Personal Care', 90.0],
-      ['Salt', 'ఉప్పు', 1.0, 'Kg', 0.5, 'Spices', 25.0]
+      ['Salt', 'ఉప్పు', 1.0, 'Kg', 0.5, 'Spices', 25.0],
+      ['Potato', 'బంగాళదుంప', 2.0, 'Kg', 2.0, 'Vegetables', 30.0],
+      ['Tomato', 'టమాటా', 2.0, 'Kg', 2.0, 'Vegetables', 40.0],
+      ['Green Chillies', 'పచ్చిమిర్చి', 0.5, 'Kg', 0.5, 'Vegetables', 60.0],
+      ['Coriander', 'కొత్తిమీర', 0.0, 'Packets', 1.0, 'Vegetables', 10.0],
+      ['Shampoo', 'షాంపూ', 1.0, 'Pieces', 1.0, 'Personal Care', 150.0],
+      ['Bath Soap', 'స్నానపు సబ్బు', 2.0, 'Pieces', 2.0, 'Personal Care', 45.0],
+      ['Coconut Oil', 'కొబ్బరి నూనె', 1.0, 'Pieces', 1.0, 'Personal Care', 120.0],
+      ['Detergent Powder', 'డిటర్జెంట్ పౌడర్', 1.0, 'Kg', 1.0, 'Personal Care', 140.0],
+      ['Chips', 'చిప్స్', 0.0, 'Packets', 2.0, 'Snacks', 20.0]
     ];
 
     for (const item of additionalItemsList) {
@@ -259,6 +242,41 @@ async function initDb() {
           "INSERT INTO items (english_name, telugu_name, quantity, unit, threshold, category, price) VALUES (?, ?, ?, ?, ?, ?, ?)",
           item
         );
+      }
+    }
+
+    // Deduplicate existing duplicate items in the database
+    const allItems = await all("SELECT * FROM items");
+    const seen = new Map();
+    for (const item of allItems) {
+      const key = (item.english_name || '').toLowerCase().trim();
+      if (!seen.has(key)) {
+        seen.set(key, item);
+      } else {
+        const originalItem = seen.get(key);
+        console.log(`[Database Migration] Found duplicate item: ${item.english_name} (ID: ${item.id}). Merging with original ID: ${originalItem.id}`);
+        
+        // Sum the quantities
+        const newQty = originalItem.quantity + item.quantity;
+        await run("UPDATE items SET quantity = ? WHERE id = ?", [newQty, originalItem.id]);
+        originalItem.quantity = newQty;
+
+        // Resolve shopping_list conflicts (item_id is UNIQUE)
+        const originalList = await get("SELECT * FROM shopping_list WHERE item_id = ?", [originalItem.id]);
+        const duplicateList = await get("SELECT * FROM shopping_list WHERE item_id = ?", [item.id]);
+        if (originalList && duplicateList) {
+          const newNeededQty = originalList.quantity + duplicateList.quantity;
+          await run("UPDATE shopping_list SET quantity = ? WHERE id = ?", [newNeededQty, originalList.id]);
+          await run("DELETE FROM shopping_list WHERE id = ?", [duplicateList.id]);
+        } else if (duplicateList) {
+          await run("UPDATE shopping_list SET item_id = ? WHERE id = ?", [originalItem.id, duplicateList.id]);
+        }
+
+        // Update purchase_history references
+        await run("UPDATE purchase_history SET item_id = ? WHERE item_id = ?", [originalItem.id, item.id]);
+
+        // Delete the duplicate item record
+        await run("DELETE FROM items WHERE id = ?", [item.id]);
       }
     }
   });

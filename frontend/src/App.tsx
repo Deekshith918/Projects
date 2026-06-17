@@ -71,7 +71,16 @@ const COMMON_ITEMS = [
   { english_name: 'Maggi', telugu_name: 'మ్యాగీ', unit: 'Packets', category: 'Snacks', price: 14, threshold: 2 },
   { english_name: 'Horlicks', telugu_name: 'హార్లిక్స్', unit: 'Kg', category: 'Snacks', price: 320, threshold: 0.5 },
   { english_name: 'Colgate Paste', telugu_name: 'కోల్గేట్ పేస్ట్', unit: 'Pieces', category: 'Personal Care', price: 90, threshold: 1 },
-  { english_name: 'Salt', telugu_name: 'ఉప్పు', unit: 'Kg', category: 'Spices', price: 25, threshold: 0.5 }
+  { english_name: 'Salt', telugu_name: 'ఉప్పు', unit: 'Kg', category: 'Spices', price: 25, threshold: 0.5 },
+  { english_name: 'Potato', telugu_name: 'బంగాళదుంప', unit: 'Kg', category: 'Vegetables', price: 30, threshold: 2 },
+  { english_name: 'Tomato', telugu_name: 'టమాటా', unit: 'Kg', category: 'Vegetables', price: 40, threshold: 2 },
+  { english_name: 'Green Chillies', telugu_name: 'పచ్చిమిర్చి', unit: 'Kg', category: 'Vegetables', price: 60, threshold: 0.5 },
+  { english_name: 'Coriander', telugu_name: 'కొత్తిమీర', unit: 'Packets', category: 'Vegetables', price: 10, threshold: 1 },
+  { english_name: 'Shampoo', telugu_name: 'షాంపూ', unit: 'Pieces', category: 'Personal Care', price: 150, threshold: 1 },
+  { english_name: 'Bath Soap', telugu_name: 'స్నానపు సబ్బు', unit: 'Pieces', category: 'Personal Care', price: 45, threshold: 2 },
+  { english_name: 'Coconut Oil', telugu_name: 'కొబ్బరి నూనె', unit: 'Pieces', category: 'Personal Care', price: 120, threshold: 1 },
+  { english_name: 'Detergent Powder', telugu_name: 'డిటర్జెంట్ పౌడర్', unit: 'Kg', category: 'Personal Care', price: 140, threshold: 1 },
+  { english_name: 'Chips', telugu_name: 'చిప్స్', unit: 'Packets', category: 'Snacks', price: 20, threshold: 2 }
 ];
 
 const isFancyItem = (category: string) => {

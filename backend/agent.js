@@ -93,7 +93,32 @@ const VOCABULARY = {
   'wheat flour': 'Wheat Flour',
   'godhuma pindi': 'Wheat Flour',
   'jaggery': 'Jaggery',
-  'bellam': 'Jaggery'
+  'bellam': 'Jaggery',
+  'బంగాళదుంప': 'Potato',
+  'bangaladumpa': 'Potato',
+  'potato': 'Potato',
+  'టమాటా': 'Tomato',
+  'టమోటా': 'Tomato',
+  'tomato': 'Tomato',
+  'tamata': 'Tomato',
+  'పచ్చిమిర్చి': 'Green Chillies',
+  'pachimirchi': 'Green Chillies',
+  'green chillies': 'Green Chillies',
+  'chilli': 'Green Chillies',
+  'కొత్తిమీర': 'Coriander',
+  'kothimera': 'Coriander',
+  'coriander': 'Coriander',
+  'షాంపూ': 'Shampoo',
+  'shampoo': 'Shampoo',
+  'స్నానపు సబ్బు': 'Bath Soap',
+  'bath soap': 'Bath Soap',
+  'కొబ్బరి నూనె': 'Coconut Oil',
+  'coconut oil': 'Coconut Oil',
+  'kobbarinune': 'Coconut Oil',
+  'డిటర్జెంట్': 'Detergent Powder',
+  'detergent': 'Detergent Powder',
+  'చిప్స్': 'Chips',
+  'chips': 'Chips'
 };
 
 const TELUGU_NUMBERS = {
@@ -623,7 +648,7 @@ function getCategoryFromItem(name) {
   if (n.includes('maggi') || n.includes('horlicks') || n.includes('biscuit') || n.includes('chips')) return 'Snacks';
   if (n.includes('exo') || n.includes('vim') || n.includes('dish') || n.includes('washing') || n.includes('detergent') || n.includes('utensil')) return 'Groceries';
   if (n.includes('colgate') || n.includes('paste') || n.includes('soap') || n.includes('shampoo') || n.includes('సబ్బు')) return 'Personal Care';
-  if (n.includes('onion') || n.includes('potato') || n.includes('tomato') || n.includes('vegetable') || n.includes('వెల్లుల్లి') || n.includes('ఉల్లిపాయ')) return 'Vegetables';
+  if (n.includes('onion') || n.includes('potato') || n.includes('tomato') || n.includes('chilli') || n.includes('coriander') || n.includes('vegetable') || n.includes('వెల్లుల్లి') || n.includes('ఉల్లిపాయ') || n.includes('మిర్చి') || n.includes('కొత్తిమీర')) return 'Vegetables';
   return 'Groceries';
 }
 
@@ -650,6 +675,14 @@ function getDefaultPrice(name) {
   if (n.includes('maggi')) return 14.0;
   if (n.includes('horlicks')) return 320.0;
   if (n.includes('colgate')) return 90.0;
+  if (n.includes('potato') || n.includes('బంగాళదుంప')) return 30.0;
+  if (n.includes('tomato') || n.includes('టమాటా')) return 40.0;
+  if (n.includes('chilli') || n.includes('మిర్చి')) return 60.0;
+  if (n.includes('coriander') || n.includes('కొత్తిమీర')) return 10.0;
+  if (n.includes('shampoo') || n.includes('షాంపూ')) return 150.0;
+  if (n.includes('bath soap')) return 45.0;
+  if (n.includes('coconut oil') || n.includes('కొబ్బరి నూనె')) return 120.0;
+  if (n.includes('chips') || n.includes('చిప్స్')) return 20.0;
   return 50.0;
 }
 
