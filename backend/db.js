@@ -196,6 +196,7 @@ async function initDb() {
     await run("UPDATE items SET english_name = 'Curd', category = 'Dairy' WHERE (LOWER(english_name) = 'cheese' AND telugu_name = 'పెరుగు') OR LOWER(english_name) = 'curd'");
     await run("UPDATE items SET telugu_name = 'వెన్న', category = 'Dairy' WHERE LOWER(english_name) = 'butter'");
     await run("UPDATE items SET category = 'Dairy' WHERE LOWER(english_name) = 'milk'");
+    await run("DELETE FROM items WHERE LOWER(english_name) = 'mobile'");
 
     // Ensure all standard dairy items are seeded (Self-healing checks)
     const dairyItemsList = [
