@@ -7,7 +7,9 @@ const __dirname = path.dirname(__filename);
 
 const dbPath = process.env.DATABASE_PATH
   ? path.resolve(process.env.DATABASE_PATH)
-  : path.resolve(__dirname, 'kitchen.db');
+  : (process.env.RAILWAY_VOLUME_MOUNT_PATH
+    ? path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH, 'kitchen.db')
+    : path.resolve(__dirname, 'kitchen.db'));
 
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
